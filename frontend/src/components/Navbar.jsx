@@ -19,11 +19,12 @@ const Navbar = () => {
         <Link to="/" className="hover:text-blue-600 transition-colors duration-200">Home</Link>
         <Link to="/dashboard" className="hover:text-blue-600 transition-colors duration-200">Dashboard</Link>
         <Link to="/add" className="hover:text-blue-600 transition-colors duration-200">Add Membership</Link>
+        <Link to="/about" className="hover:text-blue-600 transition-colors duration-200">About</Link>
       </div>
 
       {/* Desktop Auth Buttons */}
       <div className='hidden md:flex items-center text-lg font-medium gap-4 lg:gap-6'>
-        <button className="cursor-pointer px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-100 transition-colors duration-200">SignUp</button>
+        {/* <button className="cursor-pointer px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-100 transition-colors duration-200">SignUp</button> */}
         <button className="cursor-pointer px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-200">Login</button>
       </div>
 
@@ -46,6 +47,7 @@ const Navbar = () => {
           <Link to="/" className="w-full text-center py-2 hover:bg-gray-100" onClick={() => setIsOpen(false)}>Home</Link>
           <Link to="/dashboard" className="w-full text-center py-2 hover:bg-gray-100" onClick={() => setIsOpen(false)}>Dashboard</Link>
           <Link to="/add" className="w-full text-center py-2 hover:bg-gray-100" onClick={() => setIsOpen(false)}>Add Membership</Link>
+          <Link to="/about" className="w-full text-center py-2 hover:bg-gray-100" onClick={() => setIsOpen(false)}>About</Link>
           <div className='flex flex-col gap-3 mt-4 w-full px-4'>
             <button className="w-full py-2 rounded-md border border-gray-300 hover:bg-gray-100">SignUp</button>
             <button className="w-full py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600">Login</button>
