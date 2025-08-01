@@ -8,7 +8,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false); // State to manage mobile menu visibility
 
   return (
-    <div className='w-full bg-white mt-2 mx-auto flex justify-between items-center text-gray-900 px-4 py-2 md:px-8 lg:px-12'>
+    <div className='w-full bg-white flex justify-between items-center text-gray-900 py-2 px-4 md:px-8 lg:px-12'>
       {/* Logo */}
       <div>
         <Link to="/">

@@ -2,11 +2,11 @@ import React from 'react'
 
 const AddMembership = () => {
   return (
-    <div className="px-4  mt-10 flex flex-col items-center justify-center bg-gray-50">
+    <div className="px-4 h-screen -mt-14 flex flex-col items-center justify-center">
       <h2 className="text-3xl font-bold mb-6 text-center">
           Add Your Membership Plan
         </h2>
-      <div className="w-full max-w-md pt-8 bg-white p-2 rounded-lg shadow-md">
+      <div className="w-full max-w-md  bg-white p-8 rounded-lg shadow-md">
 
         <form className="flex flex-col gap-4">
           <input

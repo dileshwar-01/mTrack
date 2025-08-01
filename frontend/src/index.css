@@ -2,7 +2,8 @@
 @import "tailwindcss";
 
 body{
-    background-color: #f9fafb;
+    /* background-color: #f9fafb; */
+   background: linear-gradient(to top, #cde6ff, #f8faff);
     font-family: Outfit;
 }
 

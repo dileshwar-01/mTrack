@@ -34,11 +34,11 @@ const Features = () => {
         </p>
 
         <div className="flex justify-center ">
-          <div className="grid grid-cols-1 place-items-center lg:pl-50  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-10 justify-items-center">
+          <div className="grid grid-cols-1  place-items-center lg:pl-52  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-10 justify-items-center">
           {features.map((feature, index) => (
             <div
               key={index}
-              className="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition"
+              className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition"
             >
               <div className="mb-4">{feature.icon}</div>
               <h3 className="text-xl font-semibold mb-2 text-gray-800">{feature.title}</h3>

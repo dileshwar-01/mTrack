@@ -84,7 +84,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="p-6 min-h-screen bg-gray-50">
+    <div className="p-6 min-h-screen ">
       <h2 className="text-3xl font-bold mb-6 text-center">Your Memberships</h2>
 
 
@@ -99,7 +99,7 @@ const Dashboard = () => {
         return (
           <div
             key={membership.id}
-            className="bg-white p-5 rounded-lg shadow border relative"
+            className="bg-white p-5 rounded-lg shadow shadow-blue-200 border-gray-300 border relative"
           >
             <div className="flex justify-between items-center mb-2">
               <h3 className="text-lg font-semibold">{membership.name}</h3>

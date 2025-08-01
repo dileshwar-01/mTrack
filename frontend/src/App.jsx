@@ -9,7 +9,7 @@ import Login from './pages/Login'
 
 const App = () => {
   return (
-    <div className='mx-2  '>
+    <div className='  '>
       <Navbar/>
       <Routes>
         <Route path='/' element={<Home/>} />
