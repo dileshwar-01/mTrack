@@ -2,8 +2,11 @@
 @import "tailwindcss";
 
 body{
-    background-color: #F9FAFB;
+    background-color: #f9fafb;
     font-family: Outfit;
 }
 
 
+a.active hr{
+    display: block;
+}

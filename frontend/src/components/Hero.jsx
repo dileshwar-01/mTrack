@@ -6,7 +6,7 @@ const HeroSection = () => {
   const isLoggedIn = localStorage.getItem("token");
 
   return (
-    <section className="bg-gray-100 min-h-[80vh] flex items-center px-6 py-12">
+    <section className=" min-h-[80vh] flex items-center px-6 py-12">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-10">
         {/* Left Text Side */}
         <div className="text-center md:text-left">

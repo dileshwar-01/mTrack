@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { assets } from '../assets/assets';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
+import { AppContext } from '../context/AppContext';
 
 const Navbar = () => {
+  const {navigate} = useContext(AppContext);
   const [isOpen, setIsOpen] = useState(false); // State to manage mobile menu visibility
 
   return (
@@ -16,16 +18,30 @@ const Navbar = () => {
 
       {/* Desktop Navigation Links */}
       <div className='hidden md:flex items-center text-lg font-medium gap-6 lg:gap-12'>
-        <Link to="/" className="hover:text-blue-600 transition-colors duration-200">Home</Link>
-        <Link to="/dashboard" className="hover:text-blue-600 transition-colors duration-200">Dashboard</Link>
-        <Link to="/add" className="hover:text-blue-600 transition-colors duration-200">Add Membership</Link>
-        <Link to="/about" className="hover:text-blue-600 transition-colors duration-200">About</Link>
+        <NavLink to="/" className="hover:text-blue-600 transition-colors duration-200 items-center flex flex-col">
+        <p>Home</p>
+        <hr className='w-2/4 border-none h-[1.5px] bg-blue-500 hidden' />
+        </NavLink>
+
+        <NavLink to="/dashboard" className="hover:text-blue-600 transition-colors duration-200 items-center flex flex-col">
+        <p>Dashboard</p>
+        <hr className='w-2/4 border-none h-[1.5px] bg-blue-500 hidden' />
+        </NavLink>
+
+        <NavLink to="/add" className="hover:text-blue-600 transition-colors duration-200 items-center flex flex-col">
+        <p>Add Membership</p>
+        <hr className='w-2/4 border-none h-[1.5px] bg-blue-500 hidden' />
+        </NavLink>
+
+        <NavLink to="/about" className="hover:text-blue-600 transition-colors duration-200 items-center flex flex-col">
+        <p>About</p>
+        <hr className='w-2/4 border-none h-[1.5px] bg-blue-500 hidden' />
+        </NavLink>
       </div>
 
       {/* Desktop Auth Buttons */}
       <div className='hidden md:flex items-center text-lg font-medium gap-4 lg:gap-6'>
-        {/* <button className="cursor-pointer px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-100 transition-colors duration-200">SignUp</button> */}
-        <button className="cursor-pointer px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-200">Login</button>
+        <button onClick={()=>navigate('/login')}  className="cursor-pointer px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-200">Login</button>
       </div>
 
       {/* Mobile Menu Button (Hamburger) */}
@@ -44,13 +60,12 @@ const Navbar = () => {
       {/* Mobile Navigation Menu */}
       {isOpen && (
         <div className='md:hidden absolute top-16 left-0 w-full bg-white shadow-lg py-4 flex flex-col items-center gap-4 text-lg font-medium z-10'>
-          <Link to="/" className="w-full text-center py-2 hover:bg-gray-100" onClick={() => setIsOpen(false)}>Home</Link>
-          <Link to="/dashboard" className="w-full text-center py-2 hover:bg-gray-100" onClick={() => setIsOpen(false)}>Dashboard</Link>
-          <Link to="/add" className="w-full text-center py-2 hover:bg-gray-100" onClick={() => setIsOpen(false)}>Add Membership</Link>
-          <Link to="/about" className="w-full text-center py-2 hover:bg-gray-100" onClick={() => setIsOpen(false)}>About</Link>
+          <NavLink to="/" className="w-full text-center py-2 hover:bg-gray-100" onClick={() => setIsOpen(false)}>Home</NavLink>
+          <NavLink to="/dashboard" className="w-full text-center py-2 hover:bg-gray-100" onClick={() => setIsOpen(false)}>Dashboard</NavLink>
+          <NavLink to="/add" className="w-full text-center py-2 hover:bg-gray-100" onClick={() => setIsOpen(false)}>Add Membership</NavLink>
+          <NavLink to="/about" className="w-full text-center py-2 hover:bg-gray-100" onClick={() => setIsOpen(false)}>About</NavLink>
           <div className='flex flex-col gap-3 mt-4 w-full px-4'>
-            <button className="w-full py-2 rounded-md border border-gray-300 hover:bg-gray-100">SignUp</button>
-            <button className="w-full py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600">Login</button>
+            <button   onClick={() => { setIsOpen(false); navigate('/login');}} className="w-full py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600">Login</button>
           </div>
         </div>
       )}
