@@ -6,20 +6,27 @@ const initialMemberships = [
     id: 1,
     name: "Bullstrong Gym Membership",
     type: "gym",
-    startDate: "2025-07-01",
-    endDate: "2025-08-04",
+    startDate: "2025-07-23",
+    endDate: "2025-08-21",
   },
   {
     id: 2,
     name: "White House Mess",
     type: "mess",
-    startDate: "2025-07-10",
-    endDate: "2025-08-10",
+    startDate: "2025-08-01",
+    endDate: "2025-08-30",
   },
   {
     id: 3,
     name: "Netflix Subscription",
     type: "ott",
+    startDate: "2025-06-01",
+    endDate: "2025-07-01",
+  },
+  {
+    id: 3,
+    name: "Jio Sim Recharge",
+    type: "phone",
     startDate: "2025-06-01",
     endDate: "2025-07-01",
   },
@@ -42,6 +49,28 @@ const Dashboard = () => {
     setMemberships(updated);
     setIsOpen(false);
   };
+
+  const getProgress = (startDate, endDate) => {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  const today = new Date();
+
+  const total = end - start;
+  const used = today - start;
+
+  if (today < start) return 0;
+  if (today > end) return 100;
+
+  return Math.round((used / total) * 100);
+};
+
+  const getDaysLeft = (endDate) => {
+  const today = new Date();
+  const end = new Date(endDate);
+  const diffTime = end - today;
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // convert ms to days
+  return diffDays > 0 ? diffDays : 0; // don't show negative
+};
 
   
 
@@ -85,7 +114,20 @@ const Dashboard = () => {
               </span>
             </div>
             <p className="text-sm text-gray-500 capitalize">
-              {membership.type} • {membership.startDate} → {membership.endDate}
+              {membership.type} 
+            </p>
+            <p className="text-gray-800 text-sm">Started on: <span className="font-medium">{membership.startDate} </span> </p>
+            <p className="text-gray-800 text-sm">Ending on: <span className="font-medium">{membership.endDate} </span> </p>
+            <p className="text-gray-800 text-sm">Days Left: <span className="font-medium">{getDaysLeft(membership.endDate)} </span> </p>
+            <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+                  <div
+                    className="bg-blue-500 h-2 rounded-full"
+                    style={{ width: `${getProgress(membership.startDate, membership.endDate)}%` }}
+                  ></div>
+           </div>
+
+            <p className="text-xs text-gray-500 mt-1">
+              Progress: {getProgress(membership.startDate, membership.endDate)}%
             </p>
             <button
               onClick={() => openEditModal(membership)}
@@ -93,6 +135,7 @@ const Dashboard = () => {
             >
               Edit
             </button>
+            
           </div>
         );
       })}

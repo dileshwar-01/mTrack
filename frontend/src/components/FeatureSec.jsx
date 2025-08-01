@@ -3,11 +3,11 @@ import { FaCalendarCheck, FaDumbbell, FaTv, FaChartLine } from "react-icons/fa";
 
 const Features = () => {
   const features = [
-    {
-      icon: <FaCalendarCheck className="text-3xl text-blue-600" />,
-      title: "Attendance Tracking",
-      desc: "Track member check-ins and absences automatically.",
-    },
+    // {
+    //   icon: <FaCalendarCheck className="text-3xl text-blue-600" />,
+    //   title: "Attendance Tracking",
+    //   desc: "Track your .",
+    // },
     {
       icon: <FaDumbbell className="text-3xl text-blue-600" />,
       title: "Gym & Mess Management",
@@ -33,7 +33,8 @@ const Features = () => {
           Everything you need to manage your memberships — in one powerful platform.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div className="flex justify-center ">
+          <div className="grid grid-cols-1 place-items-center lg:pl-50  sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-10 justify-items-center">
           {features.map((feature, index) => (
             <div
               key={index}
@@ -44,6 +45,7 @@ const Features = () => {
               <p className="text-gray-600">{feature.desc}</p>
             </div>
           ))}
+        </div>
         </div>
       </div>
     </section>
