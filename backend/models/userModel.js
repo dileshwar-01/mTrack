@@ -2,12 +2,12 @@ import mongoose, { mongo } from "mongoose";
 const { Schema } = mongoose;
 
 const membershipSchema = new Schema({
-    name:{type:String, required: true},
+    name:{type:String, required: true, unique:true},
     type:{type:String, required:true},
     startDate:{type:Date, required:true},
     endDate:{type:Date, required:true},
     skips:{type:Number, default:0},
-    isActive:{type:Boolean,required:true}
+    isActive:{type:Boolean,default:true}
 },{_id:false});
 
 const userSchema= new Schema({
