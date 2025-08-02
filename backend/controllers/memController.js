@@ -3,7 +3,8 @@ import userModel from "../models/userModel.js";
 
 const addMem= async(req,res)=>{
    try {
-     const{userId, name, type, startDate,endDate} = req.body;
+     const{ name, type, startDate,endDate} = req.body;
+     const userId =req.userId;
      const newMem={
          name,
          type,
@@ -24,4 +25,20 @@ const addMem= async(req,res)=>{
    }
 }
 
-export{addMem}
+const getMems = async(req,res)=>{
+    try {
+        const userId= req.userId;
+        const user = await userModel.findById(userId);
+        if(!user){
+            return res.status(404).json({success:false,message:"User not found"});
+        }
+        const memberships= user.memData;
+        res.status(200).json({success:true,memberships });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({success:false, message:error.message});
+    }
+
+}
+
+export{addMem,getMems}
