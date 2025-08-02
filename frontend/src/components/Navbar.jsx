@@ -1,11 +1,15 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState ,useEffect} from 'react';
 import { assets } from '../assets/assets';
 import { Link, NavLink } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 
 const Navbar = () => {
-  const {navigate} = useContext(AppContext);
+  const {navigate,token,setToken} = useContext(AppContext);
   const [isOpen, setIsOpen] = useState(false); // State to manage mobile menu visibility
+
+  useEffect(()=>{
+
+  },[token])
 
   return (
     <div className='w-full bg-white flex justify-between items-center text-gray-900 py-2 px-4 md:px-8 lg:px-12'>
@@ -40,9 +44,22 @@ const Navbar = () => {
       </div>
 
       {/* Desktop Auth Buttons */}
-      <div className='hidden md:flex items-center text-lg font-medium gap-4 lg:gap-6'>
+      {/* <div className='hidden md:flex items-center text-lg font-medium gap-4 lg:gap-6'>
+        <button onClick={()=>navigate('/login')}  className="cursor-pointer px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-200">Login</button>
+      </div> */}
+
+
+      {
+        token?
+         <div className='hidden md:flex items-center text-lg font-medium gap-4 lg:gap-6'>
+        <button onClick={()=>{setToken('') ;localStorage.removeItem('token')}}  className="cursor-pointer px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-200">Logout</button>
+      </div>:
+         <div className='hidden md:flex items-center text-lg font-medium gap-4 lg:gap-6'>
         <button onClick={()=>navigate('/login')}  className="cursor-pointer px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-200">Login</button>
       </div>
+      }
+
+
 
       {/* Mobile Menu Button (Hamburger) */}
       <div className='md:hidden'>

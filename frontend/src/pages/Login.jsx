@@ -5,12 +5,11 @@ import { toast } from 'react-toastify';
 
 
 const Login = () => {
-    const{navigate,backendUrl} = useContext(AppContext)
+    const{navigate,backendUrl,token,setToken} = useContext(AppContext)
     const[currState,setCurrState] = useState('Login');
     const[name,setName]= useState('');
     const[password,setPassword]= useState('');
     const[email,setEmail]= useState('');
-    const [token,setToken] = useState('');
 
     const onsubmitHandler= async(e)=>{
       e.preventDefault();

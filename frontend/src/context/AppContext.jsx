@@ -6,18 +6,21 @@ export const AppContext = createContext();
 const AppContextProvider = (props)=>{
     const navigate = useNavigate();
     const backendUrl=  import.meta.env.VITE_BACKEND_URL;
-    const [token,setToken]= useState('')
+      const [token, setToken] = useState(localStorage.getItem("token") || "");
 
        useEffect(()=>{
-          if(!token && localStorage.getItem('token')){
-            setToken(localStorage.getItem('token'));
-          }  
-        },[])
+           if (token) {
+            localStorage.setItem("token", token);
+          } else {
+            localStorage.removeItem("token");
+    } 
+        },[token])
 
     const value = {
         navigate,
         backendUrl,
-        token
+        token,
+        setToken
     }
 
     return(

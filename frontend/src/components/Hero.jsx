@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { assets } from "../assets/assets"; // adjust path as needed
 import { Link } from "react-router-dom";
+import { AppContext } from "../context/AppContext";
 
 const HeroSection = () => {
-  const isLoggedIn = localStorage.getItem("token");
+
+  const {token} = useContext(AppContext)
+  useEffect(()=>{
+
+  },[token])
 
   return (
     <section className=" min-h-[80vh] flex items-center px-6 py-12">
@@ -18,7 +23,7 @@ const HeroSection = () => {
           </p>
 
           <div className="flex justify-center md:justify-start gap-4">
-            {isLoggedIn ? (
+            {token ? (
               <Link to="/dashboard">
                 <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl shadow-md transition">
                   Go to Dashboard
