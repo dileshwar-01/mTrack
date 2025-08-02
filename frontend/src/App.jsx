@@ -6,10 +6,12 @@ import Dashboard from './pages/Dashboard'
 import AddMembership from './pages/AddMembership'
 import About from './pages/About'
 import Login from './pages/Login'
+  import { ToastContainer, toast } from 'react-toastify';
 
 const App = () => {
   return (
     <div className='  '>
+      <ToastContainer/>
       <Navbar/>
       <Routes>
         <Route path='/' element={<Home/>} />
