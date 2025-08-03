@@ -16,7 +16,7 @@ const Working = () => {
     {
       icon: <FaCheckCircle className="text-3xl text-blue-600" />,
       title: "Track Daily Usage",
-      desc: "Mark attendance, track skips, and manage renewals all in one place.",
+      desc: "Track skips, and manage renewals all in one place.",
     },
     {
       icon: <FaChartPie className="text-3xl text-blue-600" />,

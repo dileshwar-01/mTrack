@@ -6,8 +6,8 @@ const membershipSchema = new Schema({
     type:{type:String, required:true},
     startDate:{type:Date, required:true},
     endDate:{type:Date, required:true},
+    skipCounter :{type:Boolean,default:false},
     skips:{type:Number, default:0},
-    isActive:{type:Boolean,default:true}
 },{timestamps:true});
 
 const userSchema= new Schema({

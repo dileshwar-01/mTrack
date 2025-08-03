@@ -52,7 +52,7 @@ const Navbar = () => {
       {
         token?
          <div className='hidden md:flex items-center text-lg font-medium gap-4 lg:gap-6'>
-        <button onClick={()=>{setToken('') ;localStorage.removeItem('token')}}  className="cursor-pointer px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-200">Logout</button>
+        <button onClick={()=>{setToken('') ;localStorage.removeItem('token');navigate('/login')}}  className="cursor-pointer px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-200">Logout</button>
       </div>:
          <div className='hidden md:flex items-center text-lg font-medium gap-4 lg:gap-6'>
         <button onClick={()=>navigate('/login')}  className="cursor-pointer px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-200">Login</button>
@@ -82,7 +82,17 @@ const Navbar = () => {
           <NavLink to="/add" className="w-full text-center py-2 hover:bg-gray-100" onClick={() => setIsOpen(false)}>Add Membership</NavLink>
           <NavLink to="/about" className="w-full text-center py-2 hover:bg-gray-100" onClick={() => setIsOpen(false)}>About</NavLink>
           <div className='flex flex-col gap-3 mt-4 w-full px-4'>
-            <button   onClick={() => { setIsOpen(false); navigate('/login');}} className="w-full py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600">Login</button>
+             {
+               token?
+                 
+                    <button onClick={()=>{setIsOpen(false);setToken('') ;localStorage.removeItem('token');navigate('/login')}}  className="w-full py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600">Logout</button>
+                 :
+                 
+                   <button onClick={()=>{navigate('/login');setIsOpen(false);}}  className="w-full py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600">Login</button>
+                
+              }
+
+            {/* <button   onClick={() => { setIsOpen(false); navigate('/login');}} className="w-full py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600">Login</button> */}
           </div>
         </div>
       )}

@@ -1,41 +1,70 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { AppContext } from "../context/AppContext";
+import { toast } from "react-toastify";
+import  axios  from "axios";
 
 // Dummy Data
-const initialMemberships = [
-  {
-    id: 1,
-    name: "Bullstrong Gym Membership",
-    type: "gym",
-    startDate: "2025-07-23",
-    endDate: "2025-08-21",
-  },
-  {
-    id: 2,
-    name: "White House Mess",
-    type: "mess",
-    startDate: "2025-08-01",
-    endDate: "2025-08-30",
-  },
-  {
-    id: 3,
-    name: "Netflix Subscription",
-    type: "ott",
-    startDate: "2025-06-01",
-    endDate: "2025-07-01",
-  },
-  {
-    id: 3,
-    name: "Jio Sim Recharge",
-    type: "phone",
-    startDate: "2025-06-01",
-    endDate: "2025-07-01",
-  },
-];
+// const initialMemberships = [
+//   {
+//     id: 1,
+//     name: "Bullstrong Gym Membership",
+//     type: "gym",
+//     startDate: "2025-07-23",
+//     endDate: "2025-08-21",
+//   },
+//   {
+//     id: 2,
+//     name: "White House Mess",
+//     type: "mess",
+//     startDate: "2025-08-01",
+//     endDate: "2025-08-30",
+//   },
+//   {
+//     id: 3,
+//     name: "Netflix Subscription",
+//     type: "ott",
+//     startDate: "2025-06-01",
+//     endDate: "2025-07-01",
+//   },
+//   {
+//     id: 3,
+//     name: "Jio Sim Recharge",
+//     type: "phone",
+//     startDate: "2025-06-01",
+//     endDate: "2025-07-01",
+//   },
+// ];
 
 const Dashboard = () => {
-  const [memberships, setMemberships] = useState(initialMemberships);
+  const{token,backendUrl,memberships,setMemberships} = useContext(AppContext)
   const [selected, setSelected] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  const listMems =async()=>{
+          try {
+              if(token){
+                  const response =await axios.post(backendUrl+'/api/mem/get' , {}, {headers:{token}});
+                  if(response.data.success){
+                    setMemberships(response.data.memberships);
+                    console.log(response.data.memberships);
+                  }
+                  else{
+                    toast.error(response.data.message);
+                  }
+              }else{
+                setMemberships([])
+              }
+          } catch (error) {
+              console.log(error.message);
+              toast.error(error.message)
+          }
+        }
+
+  useEffect(()=>{
+     listMems();
+  },[setMemberships,token])
+  
+
 
   const openEditModal = (membership) => {
     setSelected({ ...membership }); // clone to avoid mutation
@@ -116,8 +145,8 @@ const Dashboard = () => {
             <p className="text-sm text-gray-500 capitalize">
               {membership.type} 
             </p>
-            <p className="text-gray-800 text-sm">Started on: <span className="font-medium">{membership.startDate} </span> </p>
-            <p className="text-gray-800 text-sm">Ending on: <span className="font-medium">{membership.endDate} </span> </p>
+            <p className="text-gray-800 text-sm">Started on: <span className="font-medium">{membership.startDate.split('T')[0]} </span> </p>
+            <p className="text-gray-800 text-sm">Ending on: <span className="font-medium">{membership.endDate.split('T')[0]} </span> </p>
             <p className="text-gray-800 text-sm">Days Left: <span className="font-medium">{getDaysLeft(membership.endDate)} </span> </p>
             <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
                   <div
