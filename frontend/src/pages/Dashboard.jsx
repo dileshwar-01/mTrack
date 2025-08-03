@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import { toast } from "react-toastify";
 import  axios  from "axios";
+import { updateSkips } from "../../../backend/controllers/memController";
 
 // Dummy Data
 // const initialMemberships = [
@@ -38,6 +39,7 @@ import  axios  from "axios";
 const Dashboard = () => {
   const{token,backendUrl,memberships,setMemberships} = useContext(AppContext)
   const [selected, setSelected] = useState(null);
+  // const[modalMemId,setModalMemId] = useState('')
   const [isOpen, setIsOpen] = useState(false);
 
   const listMems =async()=>{
@@ -75,6 +77,23 @@ const Dashboard = () => {
       toast.error(error.message)
     }
   }
+  
+  const updateSkips= async(memId,newSkips)=>{
+    try {
+      const response = await axios.post(backendUrl+'/api/mem/skip' , {memId,newSkips}, {headers:{token}});
+      if(response.data.success){
+        listMems();
+        if(newSkips===0){
+          toast.success("Resetted skips")
+        }else{
+          toast.success("Skipped today!")
+        }
+       
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   useEffect(()=>{
      listMems();
@@ -82,7 +101,8 @@ const Dashboard = () => {
   
 
 
-  const openEditModal = (membership) => {
+  const openEditModal = (membership,memId) => {
+    // setModalMemId(memId);
     setSelected({ ...membership }); // clone to avoid mutation
     setIsOpen(true);
   };
@@ -91,6 +111,7 @@ const Dashboard = () => {
     const updated = memberships.map((m) =>
       m.id === selected.id ? selected : m
     );
+    // setModalMemId('')
     setMemberships(updated);
     setIsOpen(false);
   };
@@ -145,7 +166,7 @@ const Dashboard = () => {
 
         return (
           <div
-            key={membership.id}
+            key={membership._id}
             className="bg-white p-5 rounded-lg shadow shadow-blue-200 border-gray-300 border relative"
           >
             <div className="flex justify-between items-center mb-2">
@@ -164,28 +185,46 @@ const Dashboard = () => {
               {membership.type} 
             </p>
             <p className="text-gray-800 text-sm">Started on: <span className="font-medium">{membership.startDate.split('T')[0]} </span> </p>
-            <p className="text-gray-800 text-sm">Ending on: <span className="font-medium">{membership.endDate.split('T')[0]} </span> </p>
-            <p className="text-gray-800 text-sm">Days Left: <span className="font-medium">{getDaysLeft(membership.endDate)} </span> </p>
+           
+            <div className="flex justify-between">
+                 <p className="text-gray-800 text-sm">Ending on: <span className="font-medium">{membership.endDate.split('T')[0]} </span> </p>
+                {
+                 membership.skipCounter?
+                <p className="text-sm">Skips: <span className="font-medium">{membership.skips} </span></p>   
+                 :null
+                }
+            </div>
+            <div className="flex justify-between">
+               <p className="text-gray-800 text-sm">Days Left: <span className="font-medium">{getDaysLeft(membership.endDate)} </span> </p>
+                {
+                 membership.skipCounter?
+                <button onClick={()=>updateSkips(membership._id,0)} className="text-gray-800 text-sm cursor-pointer">Reset skips</button>   
+                 :null
+                }
+            </div>
+           
+            
             <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
                   <div
                     className="bg-blue-500 h-2 rounded-full"
                     style={{ width: `${getProgress(membership.startDate, membership.endDate)}%` }}
                   ></div>
            </div>
-
             <p className="text-xs text-gray-500 mt-1">
               Progress: {getProgress(membership.startDate, membership.endDate)}%
             </p>
+            
             <div className="flex flex-row items-center mt-4 justify-between ">
-              <button onClick={() => openEditModal(membership)} className="text-white text-xs border bg-blue-500 p-0.5 rounded-xl px-2 cursor-pointer ">Edit</button>
+              <button onClick={() => openEditModal(membership,membership._id)} className="text-white text-xs border bg-blue-500 p-0.5 rounded-xl px-2 cursor-pointer ">Edit</button>
               {
                 membership.skipCounter && isActive?
-                <button className="text-white text-xs border bg-blue-500 p-0.5 rounded-xl px-2 cursor-pointer hover:bg-red-300 ">Skip Today</button>
+                <button onClick={()=>updateSkips(membership._id,membership.skips +1)} className="text-white text-xs border bg-blue-500 p-0.5 rounded-xl px-2 cursor-pointer hover:bg-green-200 hover:text-green-900 ">Skip Today</button>
                 :null
               }
+             
               <button onClick={()=>removeMem(membership._id)} className="text-white text-xs border bg-blue-500 p-0.5 rounded-xl px-2 cursor-pointer hover:bg-red-300 " >Delete</button>
-              <p>memId: {membership._id}</p>
             </div>
+            <p>memId: {membership._id}</p>
 
             
           </div>
@@ -230,6 +269,12 @@ const Dashboard = () => {
             >
               + Renew for 30 more days
             </button>
+            {/* <button
+              onClick={()=>updateSkips(memId,0)}
+              className="text-green-600 text-sm hover:underline mb-4 block"
+            >
+              Reset skips
+            </button> */}
 
             <div className="flex justify-end gap-3">
               <button

@@ -69,4 +69,23 @@ const removeMem = async(req,res)=>{
     }
 }
 
-export{addMem,getMems,removeMem}
+const updateSkips = async(req,res)=>{
+    try {
+        const {memId,newSkips}= req.body;
+        const userId = req.userId;
+        const user = await userModel.findById(userId);
+        if(!user){
+            return res.status(404).json({success:false,message:"User not found"});
+        }
+        await userModel.updateOne(
+            { _id: userId, "memData._id": memId },
+            { $set: { "memData.$.skips": newSkips } }
+        )
+        res.status(200).json({ success: true, message: "Count updated successfully" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({success:false, message:error.message});
+    }
+}
+
+export{addMem,getMems,removeMem,updateSkips};

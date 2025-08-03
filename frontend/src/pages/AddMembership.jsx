@@ -33,7 +33,7 @@ const AddMembership = () => {
   return (
     <div className="px-4 h-screen -mt-14 flex flex-col items-center justify-center">
       <h2 className="text-3xl font-bold mb-6 text-center">
-          Add Your Membership Plan
+          Add Your Membership 
         </h2>
       <div className="w-full max-w-md  bg-white p-8 rounded-lg shadow-md">
 
