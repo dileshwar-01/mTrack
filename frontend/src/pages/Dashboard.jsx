@@ -46,7 +46,6 @@ const Dashboard = () => {
                   const response =await axios.post(backendUrl+'/api/mem/get' , {}, {headers:{token}});
                   if(response.data.success){
                     setMemberships(response.data.memberships);
-                    console.log(response.data.memberships);
                   }
                   else{
                     toast.error(response.data.message);
@@ -58,7 +57,24 @@ const Dashboard = () => {
               console.log(error.message);
               toast.error(error.message)
           }
+   }
+
+    const removeMem= async(memId)=>{
+    try {
+      if(token){
+        const response = await axios.post(backendUrl+'/api/mem/remove', {memId}, {headers:{token}})
+        if(response.data.success){
+          listMems();
+          toast.success("Membership removed successfully")
+        }else{
+          toast.error(response.data.message);
         }
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message)
+    }
+  }
 
   useEffect(()=>{
      listMems();
@@ -112,6 +128,8 @@ const Dashboard = () => {
     });
   };
 
+
+
   return (
     <div className="p-6 min-h-screen ">
       <h2 className="text-3xl font-bold mb-6 text-center">Your Memberships</h2>
@@ -158,12 +176,17 @@ const Dashboard = () => {
             <p className="text-xs text-gray-500 mt-1">
               Progress: {getProgress(membership.startDate, membership.endDate)}%
             </p>
-            <button
-              onClick={() => openEditModal(membership)}
-              className="text-blue-600 mt-4 text-sm hover:underline"
-            >
-              Edit
-            </button>
+            <div className="flex flex-row items-center mt-4 justify-between ">
+              <button onClick={() => openEditModal(membership)} className="text-white text-xs border bg-blue-500 p-0.5 rounded-xl px-2 cursor-pointer ">Edit</button>
+              {
+                membership.skipCounter && isActive?
+                <button className="text-white text-xs border bg-blue-500 p-0.5 rounded-xl px-2 cursor-pointer hover:bg-red-300 ">Skip Today</button>
+                :null
+              }
+              <button onClick={()=>removeMem(membership._id)} className="text-white text-xs border bg-blue-500 p-0.5 rounded-xl px-2 cursor-pointer hover:bg-red-300 " >Delete</button>
+              <p>memId: {membership._id}</p>
+            </div>
+
             
           </div>
         );
@@ -177,7 +200,7 @@ const Dashboard = () => {
 }
       {/* Edit Modal */}
       {isOpen && selected && (
-        <div className="fixed inset-0 bg-gray-100 bg-opacity-40 flex justify-center items-center z-50">
+        <div className="fixed inset-0 backdrop-blur-md bg-opacity-100 flex justify-center items-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-lg">
             <h3 className="text-xl font-bold mb-4">Edit Membership</h3>
 

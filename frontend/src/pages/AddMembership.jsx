@@ -10,13 +10,13 @@ const AddMembership = () => {
   const[type,setType]= useState('');
   const[startDate,setStartDate] = useState('');
   const[endDate,setEndDate] =useState('');
-  const[checked,setChecked] = useState(false)
+  const[skipCounter,setSkipCounter] = useState(false)
 
   const onSubmitHandler=async(e)=>{
     e.preventDefault()
     try {
       if(token){
-      const response = await axios.post(backendUrl+'/api/mem/add' , {name,type,startDate,endDate}, {headers:{token}});
+      const response = await axios.post(backendUrl+'/api/mem/add' , {name,type,startDate,endDate,skipCounter}, {headers:{token}});
       if(response.data.success){
         toast.success("Added membership successfully")
         navigate('/dashboard')
@@ -79,7 +79,7 @@ const AddMembership = () => {
             />
           </div>
           <div className='flex items-center gap-4 text-gray-800'>
-            <input type="checkbox" name="" id="" onChange={()=>setChecked(!checked)} />
+            <input type="checkbox" name="" id="" onChange={()=>setSkipCounter(!skipCounter)} />
             <p>Add skip counter for this membership</p>
           </div>
 

@@ -1,16 +1,17 @@
+import mongoose from "mongoose";
 import userModel from "../models/userModel.js";
 
 
 const addMem= async(req,res)=>{
    try {
-     const{ name, type, startDate,endDate} = req.body;
+     const{ name, type, startDate,endDate,skipCounter} = req.body;
      const userId =req.userId;
      const newMem={
          name,
          type,
          startDate:new Date(startDate),
          endDate: new Date(endDate),
-
+         skipCounter
      }
      const user =await userModel.findById(userId)
      if(!user){
@@ -41,4 +42,31 @@ const getMems = async(req,res)=>{
 
 }
 
-export{addMem,getMems}
+const removeMem = async(req,res)=>{
+    try {
+        const {memId}= req.body;
+        const userId = req.userId;
+        const user = await userModel.findById(userId);
+        if(!user){
+            return res.status(404).json({success:false,message:"User not found"});
+        }
+        // Remove the membership by memId from memData
+        const result = await userModel.updateOne(
+          { _id: userId },
+          { $pull: { memData: { _id: new mongoose.Types.ObjectId(memId) } } }
+        );
+    
+        if (result.modifiedCount === 0) {
+          return res.status(404).json({ success: false, message: "Membership not found or already removed" });
+        }
+    
+        res.status(200).json({ success: true, message: "Membership removed successfully" });
+
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({success:false, message:error.message});
+    }
+}
+
+export{addMem,getMems,removeMem}
