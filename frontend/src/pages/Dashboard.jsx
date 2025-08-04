@@ -2,39 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import { toast } from "react-toastify";
 import  axios  from "axios";
-import { updateSkips } from "../../../backend/controllers/memController";
-
-// Dummy Data
-// const initialMemberships = [
-//   {
-//     id: 1,
-//     name: "Bullstrong Gym Membership",
-//     type: "gym",
-//     startDate: "2025-07-23",
-//     endDate: "2025-08-21",
-//   },
-//   {
-//     id: 2,
-//     name: "White House Mess",
-//     type: "mess",
-//     startDate: "2025-08-01",
-//     endDate: "2025-08-30",
-//   },
-//   {
-//     id: 3,
-//     name: "Netflix Subscription",
-//     type: "ott",
-//     startDate: "2025-06-01",
-//     endDate: "2025-07-01",
-//   },
-//   {
-//     id: 3,
-//     name: "Jio Sim Recharge",
-//     type: "phone",
-//     startDate: "2025-06-01",
-//     endDate: "2025-07-01",
-//   },
-// ];
 
 const Dashboard = () => {
   const{token,backendUrl,memberships,setMemberships} = useContext(AppContext)
@@ -42,6 +9,10 @@ const Dashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [nameEdit,setNameEdit] = useState('')
   const [endDateEdit,setendDateEdit] = useState('')
+  const[expiredMems,setExpiredMems] = useState([]);
+  const[activeMems,setActiveMems] = useState([])
+  const[filter, setFilter] = useState('All');
+  const[showMem, setShowMem] = useState(memberships)
 
   const listMems =async()=>{
           try {
@@ -104,13 +75,34 @@ const Dashboard = () => {
 
   useEffect(()=>{
      listMems();
+     
   },[setMemberships,token])
   
+  useEffect(() => {
+  if (memberships && memberships.length > 0) {
+    const active = [];
+    const exp = [];
+    for (const membership of memberships) {
+      const today = new Date();
+      const end = new Date(membership.endDate);
+      const isActive = today <= end;
+      if (isActive) {
+        active.push(membership);
+      } else {
+        exp.push(membership);
+      }
+    }
+    setActiveMems(active);
+    setExpiredMems(exp);
+  }
+}, [memberships]);
+
+
 
 
   const openEditModal = (membership) => {
     
-    setSelected(membership); // clone to avoid mutation
+    setSelected(membership);
     setIsOpen(true);
   };
 
@@ -133,39 +125,54 @@ const Dashboard = () => {
   };
 
   const getProgress = (startDate, endDate) => {
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-  const today = new Date();
-
-  const total = end - start;
-  const used = today - start;
-
-  if (today < start) return 0;
-  if (today > end) return 100;
-
-  return Math.round((used / total) * 100);
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      const today = new Date();
+    
+      const total = end - start;
+      const used = today - start;
+    
+      if (today < start) return 0;
+      if (today > end) return 100;
+    
+      return Math.round((used / total) * 100);
 };
 
   const getDaysLeft = (endDate) => {
-  const today = new Date();
-  const end = new Date(endDate);
-  const diffTime = end - today;
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // convert ms to days
-  return diffDays > 0 ? diffDays : 0; // don't show negative
+    const today = new Date();
+    const end = new Date(endDate);
+    const diffTime = end - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // convert ms to days
+    return diffDays > 0 ? diffDays : 0; // don't show negative
 };
 
   
-
+useEffect(()=>{
+  if(filter=='All'){
+   setShowMem(memberships)
+  }else if(filter==='Active'){
+    setShowMem(activeMems)
+  }else{
+    setShowMem(expiredMems);
+  }
+},[filter, memberships, activeMems, expiredMems])
 
   return (
     <div className="p-6 min-h-screen ">
       <h2 className="text-3xl font-bold mb-6 text-center">Your Memberships</h2>
+      <select className="m-4  p-1" onChange={(e)=>setFilter(e.target.value)} value={filter}>
+        <option value="All">All</option>
+        <option value="Active">Active</option>
+        <option value="Expired">Expired</option>
+      </select>
+
+      
 
 
 {
-  memberships.length > 0 ? (
+  showMem.length > 0 ? (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {memberships.map((membership) => {
+      {showMem.map((membership) => {
         const today = new Date();
         const end = new Date(membership.endDate);
         const isActive = today <= end;
