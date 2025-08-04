@@ -80,7 +80,7 @@ const AddMembership = () => {
           </div>
           <div className='flex items-center gap-4 text-gray-800'>
             <input type="checkbox" name="" id="" onChange={()=>setSkipCounter(!skipCounter)} />
-            <p>Add skip counter for this membership</p>
+            <p>Add skips feature for this membership</p>
           </div>
 
           <button

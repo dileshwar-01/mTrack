@@ -39,8 +39,9 @@ import { updateSkips } from "../../../backend/controllers/memController";
 const Dashboard = () => {
   const{token,backendUrl,memberships,setMemberships} = useContext(AppContext)
   const [selected, setSelected] = useState(null);
-  // const[modalMemId,setModalMemId] = useState('')
   const [isOpen, setIsOpen] = useState(false);
+  const [nameEdit,setNameEdit] = useState('')
+  const [endDateEdit,setendDateEdit] = useState('')
 
   const listMems =async()=>{
           try {
@@ -67,7 +68,9 @@ const Dashboard = () => {
         const response = await axios.post(backendUrl+'/api/mem/remove', {memId}, {headers:{token}})
         if(response.data.success){
           listMems();
-          toast.success("Membership removed successfully")
+          toast.success("Membership removed successfully",{
+            autoClose: 1000
+          })
         }else{
           toast.error(response.data.message);
         }
@@ -84,9 +87,13 @@ const Dashboard = () => {
       if(response.data.success){
         listMems();
         if(newSkips===0){
-          toast.success("Resetted skips")
+          toast.success("Resetted skips",{
+            autoClose: 1000
+          })
         }else{
-          toast.success("Skipped today!")
+          toast.success("Skipped today!",{
+            autoClose: 1000
+          })
         }
        
       }
@@ -101,19 +108,28 @@ const Dashboard = () => {
   
 
 
-  const openEditModal = (membership,memId) => {
-    // setModalMemId(memId);
-    setSelected({ ...membership }); // clone to avoid mutation
+  const openEditModal = (membership) => {
+    
+    setSelected(membership); // clone to avoid mutation
     setIsOpen(true);
   };
 
-  const saveChanges = () => {
-    const updated = memberships.map((m) =>
-      m.id === selected.id ? selected : m
-    );
-    // setModalMemId('')
-    setMemberships(updated);
+  const saveChanges =async (nameEdit,endDateEdit) => {
+   try {
+    let memId= selected._id;
+    const response = await axios.post(backendUrl+'/api/mem/update', {memId,name :nameEdit,endDate: endDateEdit}, {headers:{token}})
+    if(response.data.success){
+      listMems();
+      toast.success("Information updated successfully")
+      setNameEdit('')
+      setendDateEdit('')
+
+    }
     setIsOpen(false);
+   } catch (error) {
+    
+   }
+
   };
 
   const getProgress = (startDate, endDate) => {
@@ -139,16 +155,6 @@ const Dashboard = () => {
 };
 
   
-
-  const renewMembership = () => {
-    const newEnd = new Date(selected.endDate);
-    newEnd.setDate(newEnd.getDate() + 30);
-    setSelected({
-      ...selected,
-      endDate: newEnd.toISOString().split("T")[0],
-    });
-  };
-
 
 
   return (
@@ -198,7 +204,7 @@ const Dashboard = () => {
                <p className="text-gray-800 text-sm">Days Left: <span className="font-medium">{getDaysLeft(membership.endDate)} </span> </p>
                 {
                  membership.skipCounter?
-                <button onClick={()=>updateSkips(membership._id,0)} className="text-gray-800 text-sm cursor-pointer">Reset skips</button>   
+                <button onClick={()=>updateSkips(membership._id,0)} className="text-gray-800 text-sm  cursor-pointer hover:underline">Reset skips</button>   
                  :null
                 }
             </div>
@@ -215,7 +221,7 @@ const Dashboard = () => {
             </p>
             
             <div className="flex flex-row items-center mt-4 justify-between ">
-              <button onClick={() => openEditModal(membership,membership._id)} className="text-white text-xs border bg-blue-500 p-0.5 rounded-xl px-2 cursor-pointer ">Edit</button>
+              <button onClick={() => {openEditModal(membership)}} className="text-white text-xs border bg-blue-500 p-0.5 rounded-xl px-2 cursor-pointer ">Edit</button>
               {
                 membership.skipCounter && isActive?
                 <button onClick={()=>updateSkips(membership._id,membership.skips +1)} className="text-white text-xs border bg-blue-500 p-0.5 rounded-xl px-2 cursor-pointer hover:bg-green-200 hover:text-green-900 ">Skip Today</button>
@@ -224,7 +230,6 @@ const Dashboard = () => {
              
               <button onClick={()=>removeMem(membership._id)} className="text-white text-xs border bg-blue-500 p-0.5 rounded-xl px-2 cursor-pointer hover:bg-red-300 " >Delete</button>
             </div>
-            <p>memId: {membership._id}</p>
 
             
           </div>
@@ -246,29 +251,29 @@ const Dashboard = () => {
             <label className="block mb-1 font-medium">Membership Name</label>
             <input
               type="text"
-              value={selected.name}
-              onChange={(e) =>
-                setSelected({ ...selected, name: e.target.value })
-              }
+             
+              onChange={(e)=>setNameEdit(e.target.value)}
+              value={nameEdit}
               className="w-full border px-3 py-2 rounded mb-4"
             />
 
             <label className="block mb-1 font-medium">End Date</label>
             <input
               type="date"
-              value={selected.endDate}
-              onChange={(e) =>
-                setSelected({ ...selected, endDate: e.target.value })
-              }
+              value={endDateEdit}
+              onChange={(e)=>setendDateEdit(e.target.value)}
               className="w-full border px-3 py-2 rounded mb-4"
             />
+            
 
-            <button
+            {/* <button
               onClick={renewMembership}
               className="text-green-600 text-sm hover:underline mb-4 block"
             >
               + Renew for 30 more days
-            </button>
+            </button> */}
+
+
             {/* <button
               onClick={()=>updateSkips(memId,0)}
               className="text-green-600 text-sm hover:underline mb-4 block"
@@ -284,7 +289,7 @@ const Dashboard = () => {
                 Cancel
               </button>
               <button
-                onClick={saveChanges}
+                onClick={()=>saveChanges(nameEdit,endDateEdit)}
                 className="px-4 py-2 bg-blue-600 text-white rounded"
               >
                 Save

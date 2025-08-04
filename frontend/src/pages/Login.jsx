@@ -21,7 +21,9 @@ const Login = () => {
             setToken(token);
             localStorage.setItem('token',token);
             navigate('/');
-            toast.success("Successfully Created Account")
+            toast.success("Successfully Created Account",{
+            autoClose: 1000
+          })
           }else{
             toast.error(response.data.message);
           }
@@ -32,7 +34,9 @@ const Login = () => {
             setToken(token);
             localStorage.setItem('token',token);
             navigate('/');
-            toast.success("Successfully Logged in")
+            toast.success("Successfully Logged in",{
+            autoClose: 1000
+          })
           }else{
             toast.error(response.data.message);
           }
