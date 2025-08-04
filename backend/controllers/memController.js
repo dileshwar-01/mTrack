@@ -4,13 +4,14 @@ import userModel from "../models/userModel.js";
 
 const addMem= async(req,res)=>{
    try {
-     const{ name, type, startDate,endDate,skipCounter} = req.body;
+     const{ name, type, startDate,endDate,price,skipCounter} = req.body;
      const userId =req.userId;
      const newMem={
          name,
          type,
          startDate:new Date(startDate),
          endDate: new Date(endDate),
+         price,
          skipCounter
      }
      const user =await userModel.findById(userId)

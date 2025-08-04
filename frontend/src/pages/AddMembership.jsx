@@ -10,13 +10,14 @@ const AddMembership = () => {
   const[type,setType]= useState('');
   const[startDate,setStartDate] = useState('');
   const[endDate,setEndDate] =useState('');
-  const[skipCounter,setSkipCounter] = useState(false)
+  const[skipCounter,setSkipCounter] = useState(false);
+  const[price,setPrice] = useState('')
 
   const onSubmitHandler=async(e)=>{
     e.preventDefault()
     try {
       if(token){
-      const response = await axios.post(backendUrl+'/api/mem/add' , {name,type,startDate,endDate,skipCounter}, {headers:{token}});
+      const response = await axios.post(backendUrl+'/api/mem/add' , {name,type,startDate,endDate,price,skipCounter}, {headers:{token}});
       if(response.data.success){
         toast.success("Added membership successfully")
         navigate('/dashboard')
@@ -53,6 +54,15 @@ const AddMembership = () => {
             onChange={(e)=>setType(e.target.value)}
             value={type}
             placeholder="Enter membership type"
+          />
+
+          <input
+            className="border px-3 py-2 rounded-md w-full"
+            type="text"
+            name="price"
+            onChange={(e)=>setPrice(e.target.value)}
+            value={price}
+            placeholder="Enter membership price"
           />
 
           <div className="flex flex-col">

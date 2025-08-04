@@ -12,7 +12,7 @@ const Dashboard = () => {
   const[expiredMems,setExpiredMems] = useState([]);
   const[activeMems,setActiveMems] = useState([])
   const[filter, setFilter] = useState('All');
-  const[showMem, setShowMem] = useState(memberships)
+  const[showMem, setShowMem] = useState(memberships);
 
   const listMems =async()=>{
           try {
@@ -160,7 +160,7 @@ useEffect(()=>{
   return (
     <div className="p-6 min-h-screen ">
       <h2 className="text-3xl font-bold mb-6 text-center">Your Memberships</h2>
-      <select className="m-4  p-1" onChange={(e)=>setFilter(e.target.value)} value={filter}>
+      <select   className="m-4 px-3 py-1.5 text-sm border border-gray-300 rounded-md bg-white text-gray-700 focus:outline-none " onChange={(e)=>setFilter(e.target.value)} value={filter}>
         <option value="All">All</option>
         <option value="Active">Active</option>
         <option value="Expired">Expired</option>
@@ -197,10 +197,24 @@ useEffect(()=>{
             <p className="text-sm text-gray-500 capitalize">
               {membership.type} 
             </p>
-            <p className="text-gray-800 text-sm">Started on: <span className="font-medium">{membership.startDate.split('T')[0]} </span> </p>
+            <p className="text-gray-800 text-sm">Price: ₹<span className="font-medium">{membership.price}</span></p>
+            <p className="text-gray-800 text-sm">Started on: <span className="font-medium">{new Date(membership.startDate).toLocaleDateString('en-GB', {
+              day: '2-digit',
+              month: 'short',
+              year: 'numeric'
+            })} </span> </p>
            
             <div className="flex justify-between">
-                 <p className="text-gray-800 text-sm">Ending on: <span className="font-medium">{membership.endDate.split('T')[0]} </span> </p>
+                 <p className="text-gray-800 text-sm">
+                 {
+                  isActive? " Ending on: "
+                  :"Ended on: "
+                 }
+                   <span className="font-medium">{new Date(membership.endDate).toLocaleDateString('en-GB', {
+                  day: '2-digit',
+                  month: 'short',
+                  year: 'numeric'
+                })} </span> </p>
                 {
                  membership.skipCounter?
                 <p className="text-sm">Skips: <span className="font-medium">{membership.skips} </span></p>   
@@ -210,7 +224,7 @@ useEffect(()=>{
             <div className="flex justify-between">
                <p className="text-gray-800 text-sm">Days Left: <span className="font-medium">{getDaysLeft(membership.endDate)} </span> </p>
                 {
-                 membership.skipCounter?
+                 membership.skipCounter && isActive?
                 <button onClick={()=>updateSkips(membership._id,0)} className="text-gray-800 text-sm  cursor-pointer hover:underline">Reset skips</button>   
                  :null
                 }
@@ -281,13 +295,6 @@ useEffect(()=>{
             </button> */}
 
 
-            {/* <button
-              onClick={()=>updateSkips(memId,0)}
-              className="text-green-600 text-sm hover:underline mb-4 block"
-            >
-              Reset skips
-            </button> */}
-
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setIsOpen(false)}
@@ -305,6 +312,8 @@ useEffect(()=>{
           </div>
         </div>
       )}
+
+
     </div>
   );
 };

@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 const membershipSchema = new Schema({
     name:{type:String, required: true,},
     type:{type:String, required:true},
+    price:{type:Number,default:0},
     startDate:{type:Date, required:true},
     endDate:{type:Date, required:true},
     skipCounter :{type:Boolean,default:false},
