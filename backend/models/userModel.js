@@ -14,7 +14,12 @@ const membershipSchema = new Schema({
 const userSchema= new Schema({
     name:{type:String, required:true},
     email:{type:String, required:true, unique:true},
-    password:{type:String, required:true},
+   password: {
+  type: String,
+  required: function () {
+    return this.authType === 'local'; // Only require password for normal users
+  }
+},
     memData:{type:[membershipSchema],default:[]}
 
 },{timestamps:true});

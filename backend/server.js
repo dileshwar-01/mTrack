@@ -4,6 +4,7 @@ import cors from 'cors'
 import connectDB from './config.js/mongodb.js'
 import userRouter from './routes/userRoutes.js'
 import memRouter from './routes/memRoutes.js'
+import router from './routes/authRoutes.js'
 
 
 //App config
@@ -18,6 +19,7 @@ app.use(cors())
 //api endpoints
 app.use('/api/user',userRouter);
 app.use('/api/mem',memRouter);
+app.use('/api/auth',router);
 
 app.get('/',(req,res)=>{
     res.send("API working")

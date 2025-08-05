@@ -36,7 +36,9 @@ const AddMembership = () => {
       <h2 className="text-3xl font-bold mb-6 text-center">
           Add Your Membership 
         </h2>
-      <div className="w-full max-w-md  bg-white p-8 rounded-lg shadow-md">
+      {
+        token?
+        ( <div className="w-full max-w-md  bg-white p-8 rounded-lg shadow-md">
 
         <form onSubmit={onSubmitHandler} className="flex flex-col gap-4">
           <input
@@ -101,6 +103,9 @@ const AddMembership = () => {
           </button>
         </form>
       </div>
+      )
+        : (<p className='text-lg text-gray-600'> Please login to get started...</p>)
+      }
     </div>
   );
 };
