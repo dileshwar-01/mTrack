@@ -19,7 +19,9 @@ const AddMembership = () => {
       if(token){
       const response = await axios.post(backendUrl+'/api/mem/add' , {name,type,startDate,endDate,price,skipCounter}, {headers:{token}});
       if(response.data.success){
-        toast.success("Added membership successfully")
+        toast.success("Added membership successfully",{
+            autoClose: 1000
+          })
         navigate('/dashboard')
       }else{
         toast.error(response.data.message);

@@ -104,11 +104,10 @@ const Login = () => {
       required
     />
 
-    <div className='w-full flex justify-between text-sm mt-[-8px]'>
-      <p className='cursor-pointer'>Forgot your password?</p>
+    <div className='w-full flex justify-end text-sm mt-[-8px]'>
       {
         currState === "Login" ?
-        <p onClick={() => setCurrState('Sign Up')} className='cursor-pointer hover:text-blue-500'>Create account</p>
+        <p onClick={() => setCurrState('Sign Up')} className='cursor-pointer hover:text-blue-500 '>Create new account</p>
         :
         <p onClick={() => setCurrState('Login')} className='cursor-pointer hover:text-blue-500'>Login here</p>
       }

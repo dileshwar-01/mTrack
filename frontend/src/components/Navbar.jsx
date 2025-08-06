@@ -42,6 +42,7 @@ const Navbar = () => {
         <hr className='w-2/4 border-none h-[1.5px] bg-blue-500 hidden' />
         </NavLink>
       </div>
+      
 
       {/* Desktop Auth Buttons */}
       {/* <div className='hidden md:flex items-center text-lg font-medium gap-4 lg:gap-6'>

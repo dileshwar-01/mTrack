@@ -15,9 +15,11 @@ const HeroSection = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-10">
         {/* Left Text Side */}
         <div className="text-center md:text-left">
+          <i className="text-xl  text-gray-700">"Subscriptions change. Your tracking shouldn’t."</i>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Welcome to <span className="text-blue-600">MTrack</span>
           </h1>
+          
           <p className="text-lg md:text-xl text-gray-700 mb-8">
             Effortlessly manage all your memberships — gym, mess, OTT, and more — in one place.
           </p>
