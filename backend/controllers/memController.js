@@ -89,24 +89,37 @@ const updateSkips = async(req,res)=>{
     }
 }
 
-const updateMem = async(req,res)=>{
-    try{
-        const {memId,name,endDate}= req.body;
+const updateMem = async (req, res) => {
+    try {
+        const { memId, name, endDate } = req.body;
         const userId = req.userId;
+
         const user = await userModel.findById(userId);
-        if(!user){
-            return res.status(404).json({success:false,message:"User not found"});
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
         }
+
+        let updateFields = {};
+        if (name) updateFields["memData.$.name"] = name;
+        if (endDate) updateFields["memData.$.endDate"] = endDate;
+
+        if (Object.keys(updateFields).length === 0) {
+            return res.status(400).json({ success: false, message: "No valid fields to update" });
+        }
+
         await userModel.updateOne(
-            {_id:userId,"memData._id":memId},
-            { $set : {"memData.$.name": name,"memData.$.endDate":endDate}}
-        )
-          res.status(200).json({ success: true, message: "Membership info updated successfully" });
-    }catch{
+            { _id: userId, "memData._id": memId },
+            { $set: updateFields }
+        );
+
+        res.status(200).json({ success: true, message: "Membership info updated successfully" });
+
+    } catch (error) {
         console.log(error);
-        res.status(500).json({success:false, message:error.message});
+        res.status(500).json({ success: false, message: error.message });
     }
-}
+};
+
 
 
 export{addMem,getMems,removeMem,updateSkips,updateMem};
