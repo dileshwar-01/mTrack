@@ -37,7 +37,7 @@ module "eks" {
   version = "~> 21.0"
 
   name               = var.cluster_name
-  kubernetes_version = "1.33"
+  kubernetes_version = "1.31"
 
   endpoint_public_access = true
   endpoint_private_access = true

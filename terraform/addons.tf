@@ -14,6 +14,13 @@ module "eks_addons" {
         namespace = "cert-manager"
     }
 
+    # Cluster Autoscaler
+    enable_cluster_autoscaler = true
+    cluster_autoscaler = {
+        most_recent = true
+        namespace = "kube-system"
+    }
+
     # NginX Ingress Controller
     enable_ingress_nginx = true
     ingress_nginx = {

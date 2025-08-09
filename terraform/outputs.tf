@@ -35,11 +35,6 @@ output "cluster_oidc_issuer_url" {
   value       = module.eks.cluster_oidc_issuer_url
 }
 
-output "cluster_name_suffix" {
-  description = "Random suffix added to cluster name"
-  value       = random_string.suffix.result
-}
-
 output "cluster_endpoint" {
   description = "Endpoint for EKS control plane"
   value       = module.eks.cluster_endpoint
