@@ -1,5 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
+namespace: mtrack
 metadata:
   name: frontend
   labels:
@@ -12,10 +13,10 @@ spec:
   template:
     metadata:
       labels:
-        app: nginx
+        app: frontend
     spec:
       containers:
-      - name: nginx
-        image: nginx:1.14.2
+      - image: dakshsawhneyy/mtrack-frontend:latest
+        name: mtrack-frontend
         ports:
-        - containerPort: 80
+        - containerPort: 5173
