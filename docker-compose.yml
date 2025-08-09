@@ -15,8 +15,18 @@ services:
       - "mtrack-network"
     depends_on:
       - frontend
+      - redis
     env_file:
       - ./backend/.env
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1  # Cloudflare DNS
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - "mtrack-network"
 
 networks:
   mtrack-network:
