@@ -3,6 +3,8 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
+data "aws_caller_identity" "current" {}
+
 locals {
-    azs = slice(data.aws_availability_zones.available, 0, 3)    # fetch first three azs
+    azs = slice(data.aws_availability_zones.available.names, 0, 3)    # fetch first three azs
 }

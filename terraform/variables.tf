@@ -5,6 +5,13 @@ variable "vpc_cidr" {
 
 variable "cluster_name" {
   type = string
-  default = "mTrack-VPC"
+  default = "mTrack"
 }
 
+variable "aws_region" {
+  default = "ap-south-1"
+}
+
+variable "environment" {
+  default = "dev"
+}

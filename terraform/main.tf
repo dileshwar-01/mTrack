@@ -10,7 +10,7 @@ module "vpc" {
   public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
 
   enable_nat_gateway = true
-  enable_vpn_gateway = true
+  single_nat_gateway = true
 
   create_igw = true
 
@@ -28,6 +28,38 @@ module "vpc" {
 
   tags = {
     Terraform = "true"
-    Environment = "dev"
+    Environment = var.environment
   }
+}
+
+module "eks" {
+  source  = "terraform-aws-modules/eks/aws"
+  version = "~> 21.0"
+
+  name               = var.cluster_name
+  kubernetes_version = "1.33"
+
+  endpoint_public_access = true
+  endpoint_private_access = true
+  enable_cluster_creator_admin_permissions = true
+
+  # Simplified Node Management
+  compute_config = {
+    enabled    = true
+    node_pools = ["general-purpose"]
+  }
+
+  vpc_id     = module.vpc.vpc_id
+  subnet_ids = module.vpc.private_subnets
+
+  # KMS Configuration
+  create_kms_key = true
+  kms_key_description = "EKS cluster ${var.cluster_name} KMS Key"
+  kms_key_deletion_window_in_days = 7
+
+  tags = {
+    Environment = var.environment
+    Terraform   = "true"
+  }
+  depends_on = [ module.vpc ]
 }
