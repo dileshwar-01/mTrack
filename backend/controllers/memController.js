@@ -34,15 +34,18 @@ const addMem= async(req,res)=>{
 
 const getMems = async(req,res)=>{
     try {
+        console.log('Received /api/mem/get request')
         const userId= req.userId;
         // Implementing Redis, storing it in cache
         const cached = await redis.get(`memberships:${userId}`)
         // console.log("🔍 Redis cache for", userId, "=>", cached);
         if(cached){
             try {
+                console.log('Data from Redis:', cached)
                 const parsedCache = JSON.parse(cached)
                 return res.status(200).json({success: true, memberships:parsedCache})
             } catch (error) {
+                console.error('Error in /api/mem/get:', err)
                 console.log(error)
             }
         } 
