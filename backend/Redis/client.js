@@ -1,7 +1,7 @@
 import IORedis from 'ioredis'
 
 const redis = new IORedis({
-    host: 'redis',
+    host: 'redis-service',
     port: 6379,
     maxRetriesPerRequest: null
 })
