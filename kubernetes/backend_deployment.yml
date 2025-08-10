@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
-namespace: mtrack
 metadata:
   name: backend
+  namespace: mtrack
   labels:
     app: backend
 spec:
@@ -20,3 +20,15 @@ spec:
         image: dakshsawhneyy/mtrack-backend:latest
         ports:
         - containerPort: 4000
+        # backend expects to read .env file from disc, so mount this .env inside container
+        volumeMounts:
+        - name: backend-env
+          mountPath: /app/.env    # where your app expects the .env file
+          subPath: .env    # maps secret key ".env" to this file
+      volumes:
+      - name: backend-env
+        secret:
+          secretName: backend-dotfile-secret  # Connect this volume to the Secret you created
+          items:
+          - key: .env
+            path: .env
