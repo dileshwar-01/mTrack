@@ -18,6 +18,7 @@ provider "aws" {
 }
 
 # K8S configuration, due to which i can connect to my EKS Cluster through CLI
+# to deploy resporces on eks cluster, you auth EKS Cluster with CLI token
 provider "kubernetes" {
   host = module.eks.cluster_endpoint
   cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)

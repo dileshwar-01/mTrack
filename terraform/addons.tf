@@ -7,14 +7,14 @@ module "eks_addons" {
     cluster_endpoint = module.eks.cluster_endpoint
     oidc_provider_arn = module.eks.oidc_provider_arn
 
-    # CERT MANAGER 
+    # CERT MANAGER # Manages SSL certificates inside Kubernetes.
     enable_cert_manager = true
     cert_manager = {
         most_recent = true
         namespace = "cert-manager"
     }
 
-    # Cluster Autoscaler
+    # Cluster Autoscaler # Automatically adds/removes worker nodes based on load.
     enable_cluster_autoscaler = true
     cluster_autoscaler = {
         most_recent = true
@@ -27,7 +27,7 @@ module "eks_addons" {
         most_recent = true
         namespace = "ingress-nginx"
 
-        # Basic Configuration
+        # Basic Configuration -- configure this with NLB and health check notations
         set = [
             {
                 name  = "controller.service.type"
@@ -63,7 +63,7 @@ module "eks_addons" {
             },
             {
                 name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-type"
-                value = "nlb"
+                value = "alb"
             },
             {
                 name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-nlb-target-type"

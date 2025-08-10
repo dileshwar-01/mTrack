@@ -3,6 +3,7 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
+# Fetch your current AWS account info (used internally by modules).
 data "aws_caller_identity" "current" {}
 
 locals {
