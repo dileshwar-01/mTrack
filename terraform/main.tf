@@ -26,10 +26,11 @@ module "vpc" {
   manage_default_security_group = true
   default_security_group_tags = { Name = "${var.cluster_name}-default-sg" }
 
-  tags = {
-    Terraform = "true"
-    Environment = var.environment
-  }
+  # Kubernetes-Specific tags to subnets -- merging because it gets both common tags and subnet tags
+  public_subnet_tags = merge(local.common_tags, local.public_subnet_tags)
+  private_subnet_tags = merge(local.common_tags, local.private_subnet_tags)
+
+  tags = local.common_tags
 }
 
 module "eks" {
@@ -57,9 +58,7 @@ module "eks" {
   kms_key_description = "EKS cluster ${var.cluster_name} KMS Key"
   kms_key_deletion_window_in_days = 7
 
-  tags = {
-    Environment = var.environment
-    Terraform   = "true"
-  }
+  tags = local.common_tags
+
   depends_on = [ module.vpc ]
 }
