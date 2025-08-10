@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: dakshsawhneyy.online
+  - host: www.dakshsawhneyy.online
     http:
       paths:
       - path: /
