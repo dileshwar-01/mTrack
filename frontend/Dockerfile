@@ -3,16 +3,19 @@ FROM node:21 AS builder
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci
+RUN npm ci 
 
 COPY . .
+RUN npm run build
 
-FROM node:21-alpine
+FROM node:21-alpine AS runner
 
 WORKDIR /app
 
-COPY --from=builder /app /app
+RUN npm install -g serve
 
-EXPOSE 5173
+# Copy just the build output, not node_modules or source
+COPY --from=builder /app/dist ./dist
 
-CMD ["npm", "run", "dev"]
+EXPOSE 80
+CMD ["serve", "-s", "dist", "-l", "80"]
