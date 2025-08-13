@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: mtrack
+  labels:
+    app: frontend
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        name: mtrack-frontend
+        ports:
+        - containerPort: {{ .Values.service.port }}
+        volumeMounts:
+        - name: frontend-env
+          mountPath: /app/.env  # where app expects .env file
+          subPath: .env  # maps secret key to this file
+      volumes:
+      - name: frontend-env
+        secret:
+          secretName: frontend-secret
+          items:
+          - key: .env
+            path: .env

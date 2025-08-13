@@ -1,0 +1,5 @@
+ingress:
+  ingressClassName: nginx
+  host: www.dakshsawhneyy.online
+  frontendPort: 80
+  backendPort: 4000
