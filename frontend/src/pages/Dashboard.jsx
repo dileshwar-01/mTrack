@@ -14,6 +14,13 @@ const Dashboard = () => {
   const[filter, setFilter] = useState('All');
   const[showMem, setShowMem] = useState(memberships);
 
+  const today = new Date();
+  const formattedDate = today.toLocaleDateString('en-GB', {
+                  day: '2-digit',
+                  month: 'short',
+                  year: 'numeric'
+                }); 
+
   const listMems =async()=>{
           try {
               if(token){
@@ -160,11 +167,15 @@ useEffect(()=>{
   return (
     <div className="p-6 min-h-screen ">
       <h2 className="text-3xl font-bold mb-6 text-center">Your Memberships</h2>
+      <div className="flex items-center justify-between">
       <select   className="m-4 px-3 py-1.5 text-sm border border-gray-300 rounded-md bg-white text-gray-700 focus:outline-none " onChange={(e)=>setFilter(e.target.value)} value={filter}>
         <option value="All">All</option>
         <option value="Active">Active</option>
         <option value="Expired">Expired</option>
       </select>
+
+      <p className="text-base  text-gray-700">Today: {formattedDate}</p>
+      </div>
 
       
 
