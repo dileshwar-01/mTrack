@@ -164,6 +164,8 @@ useEffect(()=>{
   }
 },[filter, memberships, activeMems, expiredMems])
 
+console.log(memberships.length)
+
   return (
     <div className="p-6 min-h-screen ">
       <h2 className="text-3xl font-bold mb-6 text-center">Your Memberships</h2>
