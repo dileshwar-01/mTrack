@@ -18,7 +18,7 @@ app.use(cors())
 
 
 // Creating prometheus counters
-const httpCounter = new promClient.counter({
+const httpCounter = new promClient.Counter({
     name: 'http_requests_total',
     help: 'Total number of HTTP requests',
     labelNames: ['method', 'path', 'status_code'],
@@ -38,6 +38,7 @@ app.use((req,res,next) => {
         httpCounter.labels({ method:req.method, path:req.path, status_code:req.statusCode }).inc()
         requestDurationHistogram.labels({ method:req.method, path:req.path, status_code:req.statusCode }).observe(duration)
     })
+    next();
 })
 
 //api endpoints
@@ -60,7 +61,7 @@ app.get('/crash', (req, res) => {
 // Exposing metrics to /metrics
 app.get('/metrics', async (req,res) => {
   res.setHeader('Content-Type', client.register.contentType);
-  const metrics = await client.register.metrics();
+  const metrics = await promClient.register.metrics();
   res.send(metrics);
 })
 
