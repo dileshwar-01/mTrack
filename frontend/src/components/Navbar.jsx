@@ -52,7 +52,7 @@ const Navbar = () => {
         <div className='flex gap-6 items-center'>
           {
             token &&
-            <div className='flex items-center text-base gap-3 font-medium text-gray-600'>
+            <div className=' mx-2 flex items-center text-base gap-3 font-medium text-gray-600'>
             <img src={assets.avatar_icon} className='w-8' />
             <p>{localStorage.getItem("username")}</p> 
           </div>
