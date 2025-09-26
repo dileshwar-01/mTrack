@@ -13,6 +13,7 @@ const Dashboard = () => {
   const[activeMems,setActiveMems] = useState([])
   const[filter, setFilter] = useState('All');
   const[showMem, setShowMem] = useState(memberships);
+  const[loading,setLoading] = useState(false)
 
   const today = new Date();
   const formattedDate = today.toLocaleDateString('en-GB', {
@@ -22,6 +23,7 @@ const Dashboard = () => {
                 }); 
 
   const listMems =async()=>{
+    setLoading(true)
           try {
               if(token){
                   const response =await axios.post(backendUrl+'/api/mem/get' , {}, {headers:{token}});
@@ -37,6 +39,8 @@ const Dashboard = () => {
           } catch (error) {
               console.log(error.message);
               toast.error(error.message)
+          } finally{
+            setLoading(false)
           }
    }
 
@@ -270,7 +274,11 @@ useEffect(()=>{
     </div>
   ) : (
     <div className="text-gray-600 text-center mt-10 text-lg">
-      No memberships added yet. Add one to get started!
+      {
+        loading? 'Loading, please wait...'
+        : 'No memberships added yet. Add one to get started!'
+      }
+      
     </div>
   )
 }

@@ -11,9 +11,11 @@ const Login = () => {
     const[name,setName]= useState('');
     const[password,setPassword]= useState('');
     const[email,setEmail]= useState('');
+    const[loading,setLoading] = useState(false)
 
     const onsubmitHandler= async(e)=>{
       e.preventDefault();
+      setLoading(true)
       try {
         if(currState=='Sign Up'){
           const response = await axios.post(backendUrl+'/api/user/signup', {name,email,password});
@@ -52,6 +54,7 @@ const Login = () => {
     }
 
     const handleGoogleLogin = async (credentialResponse) => {
+      setLoading(true)
      try {
        const tokenId = credentialResponse.credential;
        const res = await axios.post(`${backendUrl}/api/auth/google`, { token: tokenId });
@@ -116,8 +119,10 @@ const Login = () => {
       }
     </div>
 
-    <button className="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl shadow-md transition">
-      {currState === "Login" ? "Sign In" : "Sign Up"}
+    <button className={` cursor-pointer bg-blue-600 hover:bg-blue-700 text-white
+     px-6 py-3 rounded-xl shadow-md transition`}>
+      {loading? 'Signing in...' :   currState === "Login" ? "Sign In" : "Sign Up"}
+     
     </button>
 
     {/* OR divider */}

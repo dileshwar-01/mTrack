@@ -12,9 +12,11 @@ const AddMembership = () => {
   const[endDate,setEndDate] =useState('');
   const[skipCounter,setSkipCounter] = useState(false);
   const[price,setPrice] = useState('')
+  const[loading,setLoading] = useState(false)
 
   const onSubmitHandler=async(e)=>{
     e.preventDefault()
+    setLoading(true)
     try {
       if(token){
       const response = await axios.post(backendUrl+'/api/mem/add' , {name,type,startDate,endDate,price,skipCounter}, {headers:{token}});
@@ -33,7 +35,7 @@ const AddMembership = () => {
     }
   }
 
-  return (
+  return !loading ? (
     <div className="px-4 h-screen -mt-14 flex flex-col items-center justify-center">
       <h2 className="text-3xl font-bold mb-6 text-center">
           Add Your Membership 
@@ -109,7 +111,11 @@ const AddMembership = () => {
         : (<p className='text-lg text-gray-600'> Please login to get started...</p>)
       }
     </div>
-  );
+  ) :(
+    <div className='mx-auto h-screen flex items-center justify-center'>
+      <p className='text-lg text-gray-600'>Adding membership, please wait...</p>
+    </div>
+  )
 };
 
 
