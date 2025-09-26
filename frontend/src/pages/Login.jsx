@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 
 
 const Login = () => {
-    const{navigate,backendUrl,token,setToken} = useContext(AppContext)
+    const{navigate,backendUrl,token,setUser,setToken} = useContext(AppContext)
     const[currState,setCurrState] = useState('Login');
     const[name,setName]= useState('');
     const[password,setPassword]= useState('');
@@ -18,6 +18,7 @@ const Login = () => {
         if(currState=='Sign Up'){
           const response = await axios.post(backendUrl+'/api/user/signup', {name,email,password});
           if(response.data.success){
+            setUser(response.data.user)
             const token = response.data.token;
             setToken(token);
             localStorage.setItem('token',token);
@@ -31,6 +32,7 @@ const Login = () => {
         }else{
            const response = await axios.post(backendUrl+'/api/user/login', {email,password});
           if(response.data.success){
+            setUser(response.data.user);
             const token = response.data.token;
             setToken(token);
             localStorage.setItem('token',token);
@@ -55,6 +57,7 @@ const Login = () => {
        const res = await axios.post(`${backendUrl}/api/auth/google`, { token: tokenId });
    
        if (res.data.token) {
+         setUser(res.data.user)
          setToken(res.data.token);
          localStorage.setItem('token', res.data.token);
          navigate('/');

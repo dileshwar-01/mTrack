@@ -27,7 +27,7 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
     }
 
     const jwtToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET); // this matches your auth middleware
-    res.json({ token: jwtToken });
+    res.json({ token: jwtToken,user });
   } catch (err) {
     console.error("Google login error", err);
     res.status(500).json({ success: false, message: "Google login failed" });

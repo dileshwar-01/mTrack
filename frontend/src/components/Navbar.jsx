@@ -4,7 +4,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 
 const Navbar = () => {
-  const {navigate,token,setToken} = useContext(AppContext);
+  const {navigate,token,setToken,user,setUser} = useContext(AppContext);
   const [isOpen, setIsOpen] = useState(false); // State to manage mobile menu visibility
 
   useEffect(()=>{
@@ -49,16 +49,31 @@ const Navbar = () => {
         <button onClick={()=>navigate('/login')}  className="cursor-pointer px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-200">Login</button>
       </div> */}
 
-
-      {
+        <div className='flex gap-6 items-center'>
+          {
+            token &&
+            <div className='flex items-center text-base gap-3 font-medium text-gray-600'>
+            <img src={assets.avatar_icon} className='w-8' />
+            <p>{localStorage.getItem("username")}</p> 
+          </div>
+          }
+          
+          {
         token?
          <div className='hidden md:flex items-center text-lg font-medium gap-4 lg:gap-6'>
-        <button onClick={()=>{setToken('') ;localStorage.removeItem('token');navigate('/login')}}  className="cursor-pointer px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-200">Logout</button>
+        <button onClick={()=>{setToken('') ;localStorage.removeItem('token');navigate('/login');setUser(null)}} 
+         className="cursor-pointer px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600
+          transition-colors duration-200">Logout</button>
       </div>:
          <div className='hidden md:flex items-center text-lg font-medium gap-4 lg:gap-6'>
-        <button onClick={()=>navigate('/login')}  className="cursor-pointer px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-200">Login</button>
+        <button onClick={()=>navigate('/login')}  className="cursor-pointer px-4 py-2 rounded-md
+         bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-200">Login</button>
       </div>
       }
+        </div>
+
+
+      
 
 
 
