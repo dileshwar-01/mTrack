@@ -17,7 +17,7 @@ const userSchema= new Schema({
    password: {
   type: String,
   required: function () {
-    return this.authType === 'local'; // Only require password for normal users
+    return this.authType === 'local'; 
   }
 },
     memData:{type:[membershipSchema],default:[]}

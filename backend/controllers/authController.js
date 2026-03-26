@@ -22,7 +22,7 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
       user = await userModel.create({
         name,
         email,
-        authType: "google", // optional
+        authType: "google", 
       });
     }
 
@@ -30,7 +30,7 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
     res.json({ token: jwtToken,user });
   } catch (err) {
     console.error("Google login error", err);
-    res.status(500).json({ success: false, message: "Google login failed" });
+    res.status(500).json({ success: false, message: err.message, stack: err.stack });
   }
 };
 
