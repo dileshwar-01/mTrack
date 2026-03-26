@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { assets } from "../assets/assets"; // adjust path as needed
+import { assets } from "../assets/assets";
 import { Link } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 

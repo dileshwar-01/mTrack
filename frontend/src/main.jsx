@@ -7,7 +7,7 @@ import AppContextProvider from './context/AppContext.jsx';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 createRoot(document.getElementById('root')).render(
-  <GoogleOAuthProvider clientId="467708648708-sn5cgqhsfvjuf5kcurufm0iqjcieii2t.apps.googleusercontent.com">
+  <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
     <BrowserRouter>
       <AppContextProvider>
         <App />
